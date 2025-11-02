@@ -1,0 +1,83 @@
+#!/bin/sh
+# HiFiBerry Fan Control API Server - BusyBox Init Script
+# Place this in /etc/init.d/ and link from /etc/rc.d/S99fan-api
+
+DAEMON="/usr/bin/python3"
+SCRIPT="/opt/hifiberry/fan-control/fan_api_server.py"
+PIDFILE="/var/run/fan-api.pid"
+NAME="fan-api"
+
+case "$1" in
+  start)
+    echo "Starting $NAME..."
+    if [ -f "$PIDFILE" ] && kill -0 $(cat "$PIDFILE") 2>/dev/null; then
+        echo "$NAME is already running."
+        exit 1
+    fi
+    
+    nohup $DAEMON $SCRIPT > /var/log/fan-api.log 2>&1 &
+    echo $! > $PIDFILE
+    
+    sleep 1
+    if kill -0 $(cat "$PIDFILE") 2>/dev/null; then
+        echo "$NAME started (PID: $(cat $PIDFILE))"
+    else
+        echo "$NAME failed to start"
+        rm -f $PIDFILE
+        exit 1
+    fi
+    ;;
+    
+  stop)
+    echo "Stopping $NAME..."
+    if [ ! -f "$PIDFILE" ]; then
+        echo "$NAME is not running."
+        exit 1
+    fi
+    
+    PID=$(cat "$PIDFILE")
+    if kill -0 $PID 2>/dev/null; then
+        kill $PID
+        sleep 2
+        if kill -0 $PID 2>/dev/null; then
+            kill -9 $PID
+        fi
+        rm -f $PIDFILE
+        echo "$NAME stopped"
+    else
+        echo "$NAME is not running (stale PID file)"
+        rm -f $PIDFILE
+    fi
+    ;;
+    
+  restart)
+    $0 stop
+    sleep 2
+    $0 start
+    ;;
+    
+  status)
+    if [ -f "$PIDFILE" ]; then
+        PID=$(cat "$PIDFILE")
+        if kill -0 $PID 2>/dev/null; then
+            echo "$NAME is running (PID: $PID)"
+            exit 0
+        else
+            echo "$NAME is not running (stale PID file)"
+            rm -f $PIDFILE
+            exit 1
+        fi
+    else
+        echo "$NAME is not running"
+        exit 1
+    fi
+    ;;
+    
+  *)
+    echo "Usage: $0 {start|stop|restart|status}"
+    exit 1
+    ;;
+esac
+
+exit 0
+

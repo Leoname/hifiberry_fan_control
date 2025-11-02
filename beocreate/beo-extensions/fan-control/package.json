@@ -1,0 +1,12 @@
+{
+  "name": "fan-control",
+  "version": "1.0.0",
+  "description": "Temperature monitoring and fan control for HiFiBerry OS",
+  "main": "index.js",
+  "author": "HiFiBerry Fan Control",
+  "license": "MIT",
+  "plugin": {
+    "provides": []
+  }
+}
+

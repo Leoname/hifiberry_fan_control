@@ -1,0 +1,27 @@
+[Unit]
+Description=HiFiBerry Fan Control Service
+After=syslog.target network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/hifiberry/fan-control
+# GPIO_PIN can be overridden via environment variable (default: 13)
+# For GPIO 12: Environment=GPIO_PIN=12
+# For GPIO 13: Environment=GPIO_PIN=13 (default)
+ExecStart=/usr/bin/python3 /opt/hifiberry/fan-control/fan_control.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+# Uncomment and set GPIO pin if needed:
+# Environment=GPIO_PIN=13
+
+# Security settings (optional, uncomment if needed)
+# NoNewPrivileges=true
+# PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+

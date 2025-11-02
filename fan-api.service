@@ -1,0 +1,18 @@
+[Unit]
+Description=HiFiBerry Fan Control API Server
+After=syslog.target network.target fan-control.service
+Wants=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/hifiberry/fan-control
+ExecStart=/usr/bin/python3 /opt/hifiberry/fan-control/fan_api_server.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
+

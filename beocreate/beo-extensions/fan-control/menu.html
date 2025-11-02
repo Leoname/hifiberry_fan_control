@@ -1,0 +1,66 @@
+<div class="menu-screen large-title" id="fan-control" data-icon="gear.svg" data-menu-title="Fan Control" data-namespace="fan_control" data-built-in="0">
+	
+	<header>
+		<div class="back-button master setup"></div>
+		<h1>Fan Control</h1>
+	</header>
+	
+	<div class="scroll-area">
+		<div class="menu-content">
+			
+			<h2>Status</h2>
+			
+			<div class="menu-item static">
+				<div class="menu-label">Temperature</div>
+				<div class="menu-value" id="fan-temperature">--</div>
+			</div>
+			
+			<div class="menu-item static">
+				<div class="menu-label">Fan Speed</div>
+				<div class="menu-value" id="fan-duty-cycle">--</div>
+			</div>
+			
+			<div class="menu-item static">
+				<div class="menu-label">PWM Mode</div>
+				<div class="menu-value" id="fan-pwm-mode">--</div>
+			</div>
+			
+			<div class="menu-item static">
+				<div class="menu-label">GPIO Pin</div>
+				<div class="menu-value" id="fan-gpio-pin">--</div>
+			</div>
+			
+			<hr>
+			
+			<h2>Control Mode</h2>
+			
+			<div class="menu-item icon toggle" id="manual-mode-toggle" onclick="fanControl.toggleManualMode();">
+				<div class="menu-label">Manual Override</div>
+				<div class="menu-toggle"></div>
+			</div>
+			
+			<div id="manual-controls" class="hidden">
+				<div class="menu-item" onclick="fanControl.setDutyCycle();">
+					<div class="menu-label">Fan Speed</div>
+					<div class="menu-value button" id="manual-duty-display">0%</div>
+				</div>
+				<p style="padding: 0 20px; font-size: 13px; color: #666;">Set a fixed fan speed for testing. Disable manual override to return to automatic temperature-based control.</p>
+			</div>
+			
+			<hr>
+			
+			<h2>Recent Logs</h2>
+			<div id="fan-logs" style="font-family: 'Courier New', monospace; font-size: 11px; max-height: 250px; overflow-y: auto; background: rgba(0,0,0,0.05); padding: 15px; border-radius: 8px; line-height: 1.5; color: inherit;">
+				<div style="opacity: 0.5;">Loading logs...</div>
+			</div>
+			
+			<div id="fan-error" style="display: none; color: #d32f2f; padding: 12px; margin: 15px 0; background: rgba(211,47,47,0.1); border-left: 3px solid #d32f2f; border-radius: 4px; font-size: 13px;">
+			</div>
+			
+		</div>
+	</div>
+	
+</div>
+
+<script type="text/javascript" charset="utf-8" src="€/fan-control-client.js"></script>
+
